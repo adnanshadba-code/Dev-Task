@@ -1,0 +1,42 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="dev" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Folder Name="/Services/" />
+  <Folder Name="/Services/Identity/">
+    <Project Path="DevTeam.Services.Identity.API/DevTeam.Services.Identity.API.csproj" Id="204b52b3-70aa-474e-9fc8-7adfbfc0401a">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+    <Project Path="DevTeam.Services.Identity.Application/DevTeam.Services.Identity.Application.csproj" Id="3c460675-1565-43b1-9c9c-0658f901c7b2">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+    <Project Path="DevTeam.Services.Identity.Domain/DevTeam.Services.Identity.Domain.csproj" Id="194bfadd-910e-4333-bee8-b479d44953cb">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+    <Project Path="DevTeam.Services.Identity.Infrastructre/DevTeam.Services.Identity.Infrastructure.csproj" Id="a1e77497-402d-4b40-8951-9e922d30d6b3">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Folder Name="/Services/Shipments/">
+    <Project Path="DevTeam.Services.Shipments.API/DevTeam.Services.Shipments.API.csproj" Id="bc5cf323-b383-40a9-9f5d-59c355a3e81f">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+    <Project Path="DevTeam.Services.Shipments.APplications/DevTeam.Services.Shipments.Applications.csproj" Id="e82afc7b-9b3d-43c1-866e-72b91093d88d">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+    <Project Path="DevTeam.Services.Shipments.Domain/DevTeam.Services.Shipments.Domain.csproj" Id="33b1c35a-c6fe-45e8-9ec4-b40fef6c7361">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+    <Project Path="DevTeam.Services.Shipments.Infrastructure/DevTeam.Services.Shipments.Infrastructure.csproj" Id="bf2cef89-2b96-46b0-bcb4-b636fd1d15f5">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+    <Project Path="Shipments.BG/Shipments.BG.csproj" Id="551f853e-ad47-4221-8cbc-931b94c9b650">
+      <BuildType Solution="dev|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Project Path="SharedKernel/SharedKernel.csproj" Id="e6e59eb4-7804-43e6-8b22-0d3a1af326cb">
+    <BuildType Solution="dev|*" Project="Release" />
+  </Project>
+</Solution>
