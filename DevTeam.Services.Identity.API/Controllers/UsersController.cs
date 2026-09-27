@@ -24,8 +24,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<UserDto>>> GetAll()
     {
-        var result = await _mediator.Send(
-            new GetUsersQuery());
+        var result = await _mediator.Send(new GetUsersQuery());
 
         return Ok(result);
     }

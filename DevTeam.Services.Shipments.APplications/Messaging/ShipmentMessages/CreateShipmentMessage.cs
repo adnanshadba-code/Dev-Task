@@ -28,9 +28,7 @@ namespace DevTeam.Application.Messaging.ShipmentMessages
         private readonly IMediator _mediator;
         private readonly ILogger<CreateShipmentMessageHandler> _logger;
 
-        public CreateShipmentMessageHandler(
-            IMediator mediator,
-            ILogger<CreateShipmentMessageHandler> logger)
+        public CreateShipmentMessageHandler(IMediator mediator,ILogger<CreateShipmentMessageHandler> logger)
         {
             _mediator = mediator;
             _logger = logger;
@@ -42,9 +40,7 @@ namespace DevTeam.Application.Messaging.ShipmentMessages
         {
             _logger.LogInformation("CreateShipmentMessageHandler started.");
 
-            var message =
-                JsonSerializer.Deserialize<RabbitMQMessage<CreateShipmentMessage>>(
-                        json);
+            var message =JsonSerializer.Deserialize<RabbitMQMessage<CreateShipmentMessage>>(json);
 
             if (message == null)
             {
@@ -55,8 +51,7 @@ namespace DevTeam.Application.Messaging.ShipmentMessages
             _logger.LogInformation(
                 "CreateShipmentMessage deserialized successfully.");
 
-            var command =
-                new CreateShipmentCommand
+            var command =new CreateShipmentCommand
                 {
                     TrackingNumber =
                         message.Data.TrackingNumber,

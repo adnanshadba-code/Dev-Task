@@ -21,19 +21,16 @@ namespace DevTeam.Services.Shipments.API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<CarrierDto>>> GetAll()
         {
-            var result = await _mediator.Send(
-                new GetCarriersQuery());
+            var result = await _mediator.Send(new GetCarriersQuery());
             return Ok(result);
         }
 
 
         // GET: api/carriers/1
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CarrierDto>> GetById(
-            int id)
+        public async Task<ActionResult<CarrierDto>> GetById(int id)
         {
-            var result = await _mediator.Send(
-                new GetCarrierByIdQuery
+            var result = await _mediator.Send(new GetCarrierByIdQuery
                 {
                     Id = id
                 });
@@ -56,8 +53,7 @@ namespace DevTeam.Services.Shipments.API.Controllers
 
             var result = await _mediator.Send(command);
 
-            return CreatedAtAction(
-                nameof(GetById),
+            return CreatedAtAction(nameof(GetById),
                 new { id = result.Id },
                 result);
         }

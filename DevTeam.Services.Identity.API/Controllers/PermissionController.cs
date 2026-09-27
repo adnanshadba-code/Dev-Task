@@ -91,7 +91,6 @@ public class PermissionsController : ControllerBase
 
     // =========================================
     // DELETE: api/Permissions/1
-    // =========================================
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(

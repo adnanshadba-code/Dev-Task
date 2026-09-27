@@ -1,4 +1,6 @@
 ﻿
+using SharedKernel.Classes;
+
 namespace SharedKernel.Interfaces
 {
     public interface IJwtService

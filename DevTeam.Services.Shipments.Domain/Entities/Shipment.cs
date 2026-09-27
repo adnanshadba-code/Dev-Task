@@ -25,6 +25,5 @@ public class Shipment : BaseEntitiy
 
 
     // Navigation Property
-    public ICollection<ShipmentEvent> ShipmentEvents { get; set; }
-        = new List<ShipmentEvent>();
+    public ICollection<ShipmentEvent> ShipmentEvents { get; set; } = new List<ShipmentEvent>();
 }

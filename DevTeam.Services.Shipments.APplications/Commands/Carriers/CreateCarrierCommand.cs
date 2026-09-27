@@ -56,8 +56,7 @@ namespace DevTeam.Services.Shipments.Applications.Commands.Carriers
         public string ServiceLevels { get; set; } = string.Empty;
     }
 
-    public class CreateCarrierHandler
-        : IRequestHandler<CreateCarrierCommand, CarrierDto>
+    public class CreateCarrierHandler: IRequestHandler<CreateCarrierCommand, CarrierDto>
     {
         private readonly IRepository<Carrier> _repository;
         private readonly ICache _cache;
