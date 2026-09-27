@@ -10,8 +10,7 @@ public static class UserMapping
     //recieve from client
 
     //Api Contract from user , 
-    public static CreateUserCommand ToCommand(
-       this CreateUserDto dto)
+    public static CreateUserCommand ToCommand(this CreateUserDto dto)
     {
         return new CreateUserCommand
         {
@@ -24,8 +23,7 @@ public static class UserMapping
 
     // Command → Entity
     //Use case ما العملية التي أريد تنفيذها؟
-    public static User ToEntity(
-          this CreateUserCommand command)
+    public static User ToEntity(this CreateUserCommand command)
     {
         return new User
         {
@@ -49,9 +47,7 @@ public static class UserMapping
 
 
     // DTO → Command
-    public static UpdateUserCommand ToCommand(
-       this UpdateUserDto dto,
-       int id)
+    public static UpdateUserCommand ToCommand(this UpdateUserDto dto,int id)
     {
         return new UpdateUserCommand
         {
@@ -66,9 +62,7 @@ public static class UserMapping
     // Command → Existing Entity
     // UpdateUserCommand -> User
 
-    public static User UpdateFrom(
-        this UpdateUserCommand command,
-        User user)
+    public static User UpdateFrom(this UpdateUserCommand command,User user)
     {
         user.Username = command.Username;
         user.UpdateBy = command.UpdateBy;

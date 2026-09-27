@@ -1,9 +1,8 @@
-﻿using SharedKernel.Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharedKernel
+namespace SharedKernel.Classes
 {
     public class User 
     {

@@ -36,16 +36,9 @@ namespace DevTeam.Services.Shipments.Applications.Commands.Shipments
             _carrierRepository = carrierRepository;
         }
 
-        public async Task<ShipmentDto> Handle(
-            CreateShipmentCommand request,
-            CancellationToken cancellationToken)
+        public async Task<ShipmentDto> Handle(CreateShipmentCommand request,CancellationToken cancellationToken)
         {
-            var carrierExists =
-                await _carrierRepository
-                    .Query()
-                    .AnyAsync(
-                        c => c.Id == request.CarrierId,
-                        cancellationToken);
+            var carrierExists =await _carrierRepository.Query().AnyAsync(c => c.Id == request.CarrierId,cancellationToken);
 
             if (!carrierExists)
                 throw new Exception("Carrier does not exist.");

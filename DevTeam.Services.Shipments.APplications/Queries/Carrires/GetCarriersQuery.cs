@@ -102,8 +102,7 @@ namespace DevTeam.Application.Queries.Carrires
     }
 
     // IRequestHandler => MediatR
-    public class GetCarriersHandler
-        : IRequestHandler<GetCarriersQuery, List<CarrierDto>>
+    public class GetCarriersHandler: IRequestHandler<GetCarriersQuery, List<CarrierDto>>
     {
         private readonly IRepository<Carrier> _repository;
         private readonly ICache _cache;
@@ -116,9 +115,7 @@ namespace DevTeam.Application.Queries.Carrires
             _logger = logger;
         }
 
-        public async Task<List<CarrierDto>> Handle(
-            GetCarriersQuery request,
-            CancellationToken cancellationToken)
+        public async Task<List<CarrierDto>> Handle(GetCarriersQuery request,CancellationToken cancellationToken)
         {
             // 1. Cache Key
             const string cacheKey = "carriers:all";

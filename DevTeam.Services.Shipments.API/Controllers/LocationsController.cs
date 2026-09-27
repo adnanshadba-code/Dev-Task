@@ -4,6 +4,7 @@ using DevTeam.Services.Shipments.Applications.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using DevTeam.Services.Shipments.Applications.Mappings;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevTeam.Services.Shipments.API.Controllers;
 
@@ -21,8 +22,7 @@ public class LocationsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<List<LocationDto>>> GetAll()
     {
-        var result = await _mediator.Send(
-            new GetLocationsQuery());//send requedt using MeditR to GetLocationsQuery // هذا طلبي 
+        var result = await _mediator.Send(new GetLocationsQuery());//send requedt using MeditR to GetLocationsQuery // هذا طلبي 
 
         return Ok(result);//200
         //return NotFound() 400
@@ -50,7 +50,8 @@ public class LocationsController : ControllerBase
 
     // POST: api/locations
     [HttpPost]
-    //[Authorize]
+    [Authorize("Create")]
+
     public async Task<IActionResult> Create(CreateLocationDto dto)
     {
         //Dto => Command || Mapping
@@ -62,8 +63,7 @@ public class LocationsController : ControllerBase
     //ToCommand Overload method (same name ,  deffirent parameter)(
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<LocationDto>> Update(
-       int id,UpdateLocationDto dto)
+    public async Task<ActionResult<LocationDto>> Update(int id,UpdateLocationDto dto)
     {
         // DTO → Command
         var command = dto.ToCommand(id);
@@ -94,13 +94,6 @@ public class LocationsController : ControllerBase
 
         return NoContent();
     }
-
-
-
-
-
-
-
 
 
 

@@ -18,8 +18,7 @@ public class RabbitMQConsumer : IRabbitMQConsumer
     private readonly ILogger<RabbitMQConsumer> _logger;
     private readonly IRabbitMQPublisher _publisher;
 
-    public RabbitMQConsumer(
-        IOptions<RabbitMQOptions> options,
+    public RabbitMQConsumer(IOptions<RabbitMQOptions> options,
         IServiceScopeFactory scopeFactory,
         ILogger<RabbitMQConsumer> logger,
         IRabbitMQPublisher publisher)
@@ -30,9 +29,7 @@ public class RabbitMQConsumer : IRabbitMQConsumer
         _publisher = publisher;
     }
 
-    public async Task StartAsync(
-        string queueName,
-        CancellationToken cancellationToken)
+    public async Task StartAsync(string queueName,CancellationToken cancellationToken)
     {
         _logger.LogInformation(
             "Starting RabbitMQ consumer for queue: {QueueName}", queueName);

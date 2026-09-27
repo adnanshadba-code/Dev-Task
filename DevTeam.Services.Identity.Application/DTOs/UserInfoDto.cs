@@ -9,6 +9,7 @@
         public List<string> Permissions { get; set; }
     }
 }
+
 //{
 //"token": "eyJhbGciOiJIUzI1NiIs...",
 //  "user": {

@@ -18,6 +18,5 @@ namespace DevTeam.Services.Shipments.Infrastructure.Data
 
         public DbSet<ShipmentEvent> ShipmentEvents { get; set; }
 
-       
     }
 }

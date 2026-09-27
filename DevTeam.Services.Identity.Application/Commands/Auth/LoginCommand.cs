@@ -64,7 +64,7 @@ namespace DevTeam.Services.Identity.Application.Commands.Auth
 
             var permissions = user.UserPermissions.Select(x => x.Permission.Name).Distinct().ToList();
 
-            var sharedUser = new SharedKernel.User
+            var sharedUser = new SharedKernel.Classes.User
             {
                 Id = user.Id,
                 Username = user.Username

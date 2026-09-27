@@ -53,8 +53,7 @@ public class ShipmentsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        CreateShipmentDto dto)
+    public async Task<IActionResult> Create(CreateShipmentDto dto)
     {
         var message = new CreateShipmentMessage
         {

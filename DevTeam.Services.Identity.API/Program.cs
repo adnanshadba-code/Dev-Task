@@ -20,16 +20,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // =============================
 // Controllers
-// =============================
 
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 
 
-// =============================
 // Authentication - JWT
-// =============================
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

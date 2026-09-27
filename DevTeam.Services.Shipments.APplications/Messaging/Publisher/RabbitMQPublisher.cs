@@ -14,17 +14,13 @@ public class RabbitMQPublisher : IRabbitMQPublisher
     private readonly RabbitMQOptions _options;
     private readonly ILogger<RabbitMQPublisher> _logger;
 
-    public RabbitMQPublisher(
-        IOptions<RabbitMQOptions> options,
-        ILogger<RabbitMQPublisher> logger)
+    public RabbitMQPublisher(IOptions<RabbitMQOptions> options,ILogger<RabbitMQPublisher> logger)
     {
         _options = options.Value;
         _logger = logger;
     }
 
-    public async Task PublishAsync<T>(
-        string queueName,
-        T message)
+    public async Task PublishAsync<T>(string queueName,T message)
     {
         var envelope = new RabbitMQMessage<T>
         {
