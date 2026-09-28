@@ -1,14 +1,19 @@
 using DevTeam.Application.Messaging;
 using DevTeam.Application.Messaging.ShipmentEventMessage;
 using DevTeam.Application.Messaging.ShipmentMessages;
-using DevTeam.Services.Identity.Domain.Entities;
+
 using DevTeam.Services.Shipments.Applications.Commands.Shipments;
 using DevTeam.Services.Shipments.Applications.Messaging.Publisher;
 using DevTeam.Services.Shipments.Applications.Messaging.Queues;
-using Microsoft.AspNetCore.Identity;
+using DevTeam.Services.Shipments.Domain.Entities;
+using DevTeam.Services.Shipments.Infrastructure.Data;
+
+using Microsoft.EntityFrameworkCore;
+
 using SharedKernel.Interfaces;
 using SharedKernel.Repositories;
 using SharedKernel.Services;
+
 using Shipments.BG.Consumer;
 using ShipmentWorker;
 
@@ -23,15 +28,52 @@ var configuration = builder.Configuration;
 
 
 // ========================================
-// RabbitMQ Configuration
+// 1. Database
 // ========================================
 
-//builder.Services.Configure<RabbitMQOptions>(
-//    configuration.GetSection("RabbitMQ"));
+builder.Services.AddDbContext<ConnectAppDbContext>(options =>
+{
+    options.UseNpgsql(
+        configuration.GetConnectionString("DefaultConnection"));
+});
 
 
 // ========================================
-// MediatR
+// 2. Unit Of Work
+// ========================================
+
+builder.Services.AddScoped<
+    IUnitOfWork<ConnectAppDbContext>,
+    UnitOfWork<ConnectAppDbContext>>();
+
+
+// ========================================
+// 3. Repository
+// ========================================
+
+// Shipment
+builder.Services.AddScoped<
+    IRepository<Shipment>,
+    Repository<Shipment, ConnectAppDbContext>>();
+
+// ShipmentEvent
+builder.Services.AddScoped<
+    IRepository<ShipmentEvent>,
+    Repository<ShipmentEvent, ConnectAppDbContext>>();
+
+// Carrier
+builder.Services.AddScoped<
+    IRepository<Carrier>,
+    Repository<Carrier, ConnectAppDbContext>>();
+
+// Location
+builder.Services.AddScoped<
+    IRepository<Location>,
+    Repository<Location, ConnectAppDbContext>>();
+
+
+// ========================================
+// 4. MediatR
 // ========================================
 
 builder.Services.AddMediatR(cfg =>
@@ -42,53 +84,24 @@ builder.Services.AddMediatR(cfg =>
 
 
 // ========================================
-// Password Hasher
+// 5. RabbitMQ Configuration
 // ========================================
 
-builder.Services.AddScoped<
-    IPasswordHasher<User>,
-    PasswordHasher<User>>();
-
-
-// ========================================
-// Database
-// ========================================
-
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//{
-//    options.UseNpgsql(
-//        configuration.GetConnectionString(
-//            "DefaultConnection"));
-//});
+builder.Services.Configure<RabbitMQOptions>(
+    configuration.GetSection("RabbitMQ"));
 
 
 // ========================================
-// Repository
+// 6. RabbitMQ Publisher
 // ========================================
 
-//builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<,>));
-
-// ========================================
-// Unit OfWork
-// ========================================
-
-//builder.Services.AddScoped<
-//    IUnitOfWork,
-//    UnitOfWork>();
+builder.Services.AddSingleton<
+    IRabbitMQPublisher,
+    RabbitMQPublisher>();
 
 
 // ========================================
-// RabbitMQ Publisher
-// ========================================
-
-//builder.Services.AddSingleton<
-//    IRabbitMQPublisher,
-//    DevTeam.Application.Messaging.RabbitMQPublisher>();
-
-
-// ========================================
-// RabbitMQ Consumer
+// 7. RabbitMQ Consumer
 // ========================================
 
 builder.Services.AddSingleton<
@@ -97,97 +110,85 @@ builder.Services.AddSingleton<
 
 
 // ========================================
-// Shipment Message Handlers
+// 8. Shipment Message Handlers
 // ========================================
 
 // Create Shipment
-
 builder.Services.AddScoped<
     IRabbitMQMessageHandler,
-    DevTeam.Application.Messaging.ShipmentMessages.CreateShipmentMessageHandler>();
-
+    CreateShipmentMessageHandler>();
 
 // Update Shipment
-
 builder.Services.AddScoped<
     IRabbitMQMessageHandler,
-    DevTeam.Application.Messaging.ShipmentMessages.UpdateShipmentMessageHandler>();
-
+    UpdateShipmentMessageHandler>();
 
 // Delete Shipment
-
-builder.Services.AddScoped<IRabbitMQMessageHandler, DeleteShipmentMessageHandler>();
-
-builder.Services.Configure<RabbitMQOptions>(
-    builder.Configuration.GetSection("RabbitMQ"));
-
-builder.Services.AddSingleton<IRabbitMQPublisher, RabbitMQPublisher>();
-
-builder.Services.AddSingleton<
-    IRabbitMQConsumer,
-    RabbitMQConsumer>();
-
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddScoped<
+    IRabbitMQMessageHandler,
+    DeleteShipmentMessageHandler>();
 
 
 // ========================================
-// ShipmentEvent Message Handlers
+// 9. ShipmentEvent Message Handlers
 // ========================================
 
 // Create ShipmentEvent
-
 builder.Services.AddScoped<
     IRabbitMQMessageHandler,
     CreateShipmentEventMessageHandler>();
 
-
 // Update ShipmentEvent
-
 builder.Services.AddScoped<
     IRabbitMQMessageHandler,
     UpdateShipmentEventMessageHandler>();
 
-
 // Delete ShipmentEvent
-
 builder.Services.AddScoped<
     IRabbitMQMessageHandler,
     DeleteShipmentEventMessageHandler>();
 
 
 // ========================================
-// JWT Service
+// 10. JWT Service
 // ========================================
 
 builder.Services.AddScoped<
     IJwtService,
     JwtService>();
 
-builder.Services.AddSingleton<IRabbitMQConsumer, RabbitMQConsumer>();
+
 // ========================================
-// Background Worker
+// 11. Redis
+// ========================================
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration =
+        configuration["Redis:ConnectionString"];
+});
+
+builder.Services.AddScoped<
+    ICache,
+    Cache>();
+
+
+// ========================================
+// 12. Background Worker
 // ========================================
 
 builder.Services.AddHostedService<Worker>();
 
 
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration =
-        builder.Configuration["Redis:ConnectionString"];
-});
-
-
-builder.Services.AddScoped<ICache, Cache>();
 // ========================================
-// Build Host
+// 13. Build Host
 // ========================================
 
 var host = builder.Build();
 
 
 // ========================================
-// Run Worker
+// 14. Run Worker
 // ========================================
 
 host.Run();

@@ -4,6 +4,7 @@ using DevTeam.Application.Queries.GetShipments;
 using DevTeam.Services.Shipments.Applications.DTOs;
 using DevTeam.Services.Shipments.Applications.Messaging.Publisher;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevTeam.Services.Shipments.API.Controllers;
@@ -53,8 +54,8 @@ public class ShipmentsController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Create(
-        CreateShipmentDto dto)
+    [Authorize("Create")]
+    public async Task<IActionResult> Create(CreateShipmentDto dto)
     {
         var message = new CreateShipmentMessage
         {

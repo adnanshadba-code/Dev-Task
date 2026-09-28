@@ -92,7 +92,7 @@ public class ShipmentEventsController : ControllerBase
         {
             ShipmentId = dto.ShipmentId,
             Status = dto.Status,
-            //  CreateBy = dto.CreateBy,
+             //CreateBy = dto.CreateBy,
             LocationId = dto.LocationId
         };
 

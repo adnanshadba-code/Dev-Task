@@ -14,17 +14,13 @@ public class RabbitMQPublisher : IRabbitMQPublisher
     private readonly RabbitMQOptions _options;
     private readonly ILogger<RabbitMQPublisher> _logger;
 
-    public RabbitMQPublisher(
-        IOptions<RabbitMQOptions> options,
-        ILogger<RabbitMQPublisher> logger)
+    public RabbitMQPublisher(IOptions<RabbitMQOptions> options,ILogger<RabbitMQPublisher> logger)
     {
         _options = options.Value;
         _logger = logger;
     }
 
-    public async Task PublishAsync<T>(
-        string queueName,
-        T message)
+    public async Task PublishAsync<T>(string queueName,T message)
     {
         var envelope = new RabbitMQMessage<T>
         {
@@ -33,14 +29,10 @@ public class RabbitMQPublisher : IRabbitMQPublisher
             Exception = null
         };
 
-        await PublishEnvelopeAsync(
-            queueName,
-            envelope);
+        await PublishEnvelopeAsync(queueName,envelope);
     }
 
-    public async Task PublishEnvelopeAsync<T>(
-        string queueName,
-        RabbitMQMessage<T> message)
+    public async Task PublishEnvelopeAsync<T>(string queueName,RabbitMQMessage<T> message)
     {
         if (!_options.Queues.TryGetValue(
                 queueName,
@@ -59,12 +51,9 @@ public class RabbitMQPublisher : IRabbitMQPublisher
             "Message Exception: {Exception}",
             message.Exception ?? "None");
 
-        var json =
-            JsonSerializer.Serialize(message);
+        var json =JsonSerializer.Serialize(message);
 
-        _logger.LogInformation(
-            "Message JSON: {Json}",
-            json);
+        _logger.LogInformation("Message JSON: {Json}",json);
 
         var factory = new ConnectionFactory
         {
@@ -75,11 +64,9 @@ public class RabbitMQPublisher : IRabbitMQPublisher
             VirtualHost = _options.VirtualHost
         };
 
-        await using var connection =
-            await factory.CreateConnectionAsync();
+        await using var connection =await factory.CreateConnectionAsync();
 
-        await using var channel =
-            await connection.CreateChannelAsync();
+        await using var channel =await connection.CreateChannelAsync();
 
         await channel.ExchangeDeclareAsync(
             exchange: queueOptions.Exchange,
@@ -123,11 +110,9 @@ public class RabbitMQPublisher : IRabbitMQPublisher
             exchange: queueOptions.Exchange,
             routingKey: queueOptions.RoutingKey);
 
-        var body =
-            Encoding.UTF8.GetBytes(json);
+        var body =Encoding.UTF8.GetBytes(json);
 
-        var properties =
-            new BasicProperties
+        var properties =new BasicProperties
             {
                 ContentType = "application/json",
                 DeliveryMode = DeliveryModes.Persistent

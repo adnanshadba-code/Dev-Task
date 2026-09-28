@@ -28,9 +28,7 @@ namespace DevTeam.Application.Messaging.ShipmentMessages
         private readonly IMediator _mediator;
         private readonly ILogger<CreateShipmentMessageHandler> _logger;
 
-        public CreateShipmentMessageHandler(
-            IMediator mediator,
-            ILogger<CreateShipmentMessageHandler> logger)
+        public CreateShipmentMessageHandler(IMediator mediator,ILogger<CreateShipmentMessageHandler> logger)
         {
             _mediator = mediator;
             _logger = logger;
@@ -41,7 +39,6 @@ namespace DevTeam.Application.Messaging.ShipmentMessages
         public async Task HandleAsync(string json, CancellationToken cancellationToken)
         {
             _logger.LogInformation("CreateShipmentMessageHandler started.");
-
             var message =
                 JsonSerializer.Deserialize<RabbitMQMessage<CreateShipmentMessage>>(
                         json);
